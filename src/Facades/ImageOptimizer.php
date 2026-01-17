@@ -1,16 +1,16 @@
 <?php
 
-namespace Joshembling\ImageOptimizer\Facades;
+namespace DaniHidayatX\ImageOptimizer\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Joshembling\ImageOptimizer\ImageOptimizer
+ * @see \DaniHidayatX\ImageOptimizer\ImageOptimizer
  */
 class ImageOptimizer extends Facade
 {
-    protected static function getFacadeAccessor(): string
+    protected static function getFacadeAccessor()
     {
-        return self::class;
+        return 'image-optimizer';
     }
 }

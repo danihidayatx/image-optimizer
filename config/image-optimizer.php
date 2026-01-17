@@ -1,6 +1,6 @@
 <?php
 
-// config for Joshembling/ImageOptimizer
+// config for DaniHidayatX/ImageOptimizer
 return [
 
 ];

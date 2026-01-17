@@ -1,10 +1,9 @@
-> [!CAUTION]  
-> There are no plans to extend this plugin's lifetime beyond Filament v3. Please do not plan to use this in production if you are using or upgrading to Filament v4.
+> [!NOTE]  
+> This package is a fork of [joshembling/image-optimizer](https://github.com/joshembling/image-optimizer), updated to support Filament v4 and Laravel 12.
 
 # Optimize your Filament images before they reach your database.
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/joshembling/image-optimizer.svg?style=flat-square)](https://packagist.org/packages/joshembling/image-optimizer)
-[![Total Downloads](https://img.shields.io/packagist/dt/joshembling/image-optimizer.svg?style=flat-square)](https://packagist.org/packages/joshembling/image-optimizer)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/danihidayatx/image-optimizer.svg?style=flat-square)](https://packagist.org/packages/danihidayatx/image-optimizer)
 
 When you currently upload an image using the native Filament component `FileUpload`, the original file is saved without any compression or conversion.
 
@@ -35,32 +34,21 @@ You use the same components as you have been doing and have access to two additi
 
 ## Installation
 
-You can install the package via composer, which currently works with the latest Filament version (^3.2) and Laravel 10, 11 & 12:
+You can install the package via composer, which works with Filament v3.x & v4.x, and Laravel 10, 11 & 12:
 
 ```bash
-composer require joshembling/image-optimizer
-```
-
-If you are using Filament 3.0 or 3.1 install with: 
-```bash
-composer require joshembling/image-optimizer:v1.2
+composer require danihidayatx/image-optimizer
 ```
 
 ## Usage
 
 ### Filament version
 
-You must be using [Filament v3.x](https://filamentphp.com/docs/3.x/panels/installation) to have access to this plugin.
-
-For specific versions that match your PHP, Laravel, Filament and Image Optimizer installations please see the table below:
+You must be using [Filament v3.x or v4.x](https://filamentphp.com/docs/panels/installation) to have access to this plugin.
 
 | PHP | Laravel version | Filament version | Image Optimizer version |
 | ----- | ----- | -----| ----- |
-| ^8.1 | ^10.0 | ^3.0 | 1.2 |
-| ^8.1 | ^10.0 | ^3.1 | 1.2 |
-| ^8.1 | ^10.0 | ^3.2 | ~1.3 |
-| ^8.2 | ^10.0, ^11.0 | ^3.2 | ^1.4 |
-| ^8.2 | ^10.0, ^11.0, ^12.0 | ^3.2 | ^1.6 |
+| ^8.2 | ^10.0, ^11.0, ^12.0 | ^3.2, ^4.0 | ^2.0 |
 
 ### Server
 
@@ -205,6 +193,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
+- [Dani Hidayat](https://github.com/danihidayatx)
 - [Josh Embling](https://github.com/joshembling)
 - [All Contributors](../../contributors)
 

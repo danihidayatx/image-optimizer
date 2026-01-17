@@ -1,8 +1,8 @@
 {
-    "name": "joshembling/image-optimizer",
-    "description": "Optimize your Filament images before they reach your database.",
+    "name": "danihidayatx/image-optimizer",
+    "description": "Optimize your Filament images before they reach your database. Forked from joshembling/image-optimizer for Filament v4 support.",
     "keywords": [
-        "joshembling",
+        "danihidayatx",
         "laravel",
         "filament",
         "filamentphp",
@@ -10,22 +10,26 @@
         "optimization",
         "image-optimizer"
     ],
-    "homepage": "https://github.com/joshembling/image-optimizer",
+    "homepage": "https://github.com/danihidayatx/image-optimizer",
     "support": {
-        "issues": "https://github.com/joshembling/image-optimizer/issues",
-        "source": "https://github.com/joshembling/image-optimizer"
+        "issues": "https://github.com/danihidayatx/image-optimizer/issues",
+        "source": "https://github.com/danihidayatx/image-optimizer"
     },
     "license": "MIT",
     "authors": [
         {
+            "name": "Dani Hidayat",
+            "role": "Maintainer"
+        },
+        {
             "name": "Josh Embling",
             "email": "joshembling@gmail.com",
-            "role": "Developer"
+            "role": "Original Creator"
         }
     ],
     "require": {
         "php": "^8.2",
-        "filament/forms": "^3.3",
+        "filament/forms": "^3.0|^4.0",
         "illuminate/contracts": "^10.0|^11.0|^12.0",
         "intervention/image": "^2.7",
         "spatie/laravel-package-tools": "^1.19.0"
@@ -33,16 +37,18 @@
     "require-dev": {
         "laravel/pint": "^1.0",
         "nunomaduro/collision": "^7.9",
-        "orchestra/testbench": "^8.0"
+        "orchestra/testbench": "^8.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "Joshembling\\ImageOptimizer\\": "src/"
+            "DaniHidayatX\\ImageOptimizer\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Joshembling\\ImageOptimizer\\Tests\\": "tests/"
+            "DaniHidayatX\\ImageOptimizer\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -50,15 +56,18 @@
         "format": "vendor/bin/pint"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Joshembling\\ImageOptimizer\\ImageOptimizerServiceProvider"
+                "DaniHidayatX\\ImageOptimizer\\ImageOptimizerServiceProvider"
             ],
             "aliases": {
-                "ImageOptimizer": "Joshembling\\ImageOptimizer\\Facades\\ImageOptimizer"
+                "ImageOptimizer": "DaniHidayatX\\ImageOptimizer\\Facades\\ImageOptimizer"
             }
         }
     },
