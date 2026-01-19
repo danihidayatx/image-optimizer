@@ -42,7 +42,7 @@ function getConfiguredComponent(Closure $configure)
     // Adapt to breaking change in Filament v4/v5
     $componentContainerClass = class_exists(\Filament\Forms\ComponentContainer::class)
         ? \Filament\Forms\ComponentContainer::class
-        : \Filament\Schemas\ComponentContainer::class;
+        : \Filament\Schemas\Schema::class;
 
     $container = $componentContainerClass::make($livewire)
         ->statePath('data')
