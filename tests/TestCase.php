@@ -3,7 +3,10 @@
 namespace DaniHidayatX\ImageOptimizer\Tests;
 
 use DaniHidayatX\ImageOptimizer\ImageOptimizerServiceProvider;
+use Filament\Actions\ActionsServiceProvider;
 use Filament\Forms\FormsServiceProvider;
+use Filament\Infolists\InfolistsServiceProvider;
+use Filament\Notifications\NotificationsServiceProvider;
 use Filament\Support\SupportServiceProvider;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -18,7 +21,10 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
+            ActionsServiceProvider::class,
+            InfolistsServiceProvider::class,
             LivewireServiceProvider::class,
+            NotificationsServiceProvider::class,
             SupportServiceProvider::class,
             FormsServiceProvider::class,
             ImageOptimizerServiceProvider::class,

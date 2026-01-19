@@ -1,6 +1,5 @@
 <?php
 
-use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -39,7 +38,13 @@ beforeEach(function () {
 function getConfiguredComponent(Closure $configure)
 {
     $livewire = new TestLivewireComponent;
-    $container = ComponentContainer::make($livewire)
+
+    // Adapt to breaking change in Filament v4/v5
+    $componentContainerClass = class_exists(\Filament\Forms\ComponentContainer::class)
+        ? \Filament\Forms\ComponentContainer::class
+        : \Filament\Schemas\ComponentContainer::class;
+
+    $container = $componentContainerClass::make($livewire)
         ->statePath('data')
         ->components([
             $component = FileUpload::make('attachment')
