@@ -69,12 +69,14 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
         FileUpload::macro('mediaName', function (string | Closure | null $name) {
             $this->imageOptimization = $this->imageOptimization ?? [];
             $this->imageOptimization['media_name'] = $name;
+
             return $this;
         });
 
         FileUpload::macro('customHeaders', function (array | Closure | null $headers) {
             $this->imageOptimization = $this->imageOptimization ?? [];
             $this->imageOptimization['custom_headers'] = $headers;
+
             return $this;
         });
 
@@ -111,7 +113,7 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
             $quality = $settings['quality'] ?? null;
 
             $filename = $this->getUploadedFileNameForStorage($file);
-            
+
             $mime = $file->getMimeType();
             $isImage = str_contains((string) $mime, 'image');
             if (! $isImage) {
@@ -160,7 +162,7 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
 
                 if ($format) {
                     $compressedImage = $image->encode($format, $quality);
-                    
+
                     // Update filename extension
                     $extension = strrpos($filename, '.');
                     if ($extension !== false) {
@@ -186,8 +188,7 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
         // Spatie FileUpload Logic
         FileUpload::macro('processAndStoreSpatie', function (TemporaryUploadedFile $file, ?Model $record) {
             /** @var \Filament\Forms\Components\SpatieMediaLibraryFileUpload $this */
-            
-            if (! $record || ! method_exists($record, 'addMediaFromString')) {
+            if (! $record || ! method_exists($record, 'addMedia')) {
                 return null;
             }
 
@@ -197,7 +198,7 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
             $maxWidth = $this->evaluate($settings['max_width'] ?? null);
             $maxHeight = $this->evaluate($settings['max_height'] ?? null);
             $quality = $settings['quality'] ?? null;
-            
+
             $filename = $this->getUploadedFileNameForStorage($file);
             $content = $file->get();
 
@@ -249,11 +250,8 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
 
                 if ($format) {
                     $content = (string) $image->encode($format, $quality);
-                    $filename = self::formatFilename($filename, $format); // Use helper if available, or logic below
-                    
-                    // Update filename extension locally if helper not available on component
-                    // But component has formatFilename static method in original code? 
-                    // No, it was on the subclass. We should replicate logic here.
+
+                    // Update filename extension locally
                     $extension = strrpos($filename, '.');
                     if ($extension !== false) {
                         $filename = substr($filename, 0, $extension + 1) . $format;
@@ -265,34 +263,31 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
                 }
             }
 
-            $mediaAdder = $record->addMediaFromString($content);
-            
+            // Create a temporary file for the optimized content
+            $tempPath = tempnam(sys_get_temp_dir(), 'optimized-image-');
+            file_put_contents($tempPath, $content);
+
+            $mediaAdder = $record->addMedia($tempPath);
+
             // Apply Spatie Options
             if ($name = $this->evaluate($settings['media_name'] ?? null)) {
-                 $mediaAdder->usingName($name);
+                $mediaAdder->usingName($name);
             } else {
-                 // Fallback to client original name if not set
-                 $mediaAdder->usingName(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+                // Fallback to client original name if not set
+                $mediaAdder->usingName(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
             }
 
             if ($headers = $this->evaluate($settings['custom_headers'] ?? null)) {
                 $mediaAdder->addCustomHeaders($headers);
             }
-            
+
             // Standard Spatie component methods
-            $mediaAdder
-                ->usingFileName($filename)
-                ->toMediaCollection($this->getCollection(), $this->getDiskName());
-                
-            // Note: Other Spatie options (properties, manipulations, etc.) 
-            // are usually handled by the standard component's logic or would require 
-            // more macros if we wanted full 1:1 on options that standard component supports.
-            // The standard component applies them in `saveUploadedFiles` loop usually?
-            // Wait, we are BYPASSING standard saveUploadedFileUsing.
-            // So we MUST apply everything the standard component applies.
-            
+            $mediaAdder->usingFileName($filename);
+
+            // Note: Other Spatie options (properties, manipulations, etc.)
+
             if (method_exists($this, 'getCustomProperties')) {
-                $mediaAdder->withCustomProperties($this->getCustomProperties());
+                $mediaAdder->withCustomProperties($this->getCustomProperties($file));
             }
             if (method_exists($this, 'getManipulations')) {
                 $mediaAdder->withManipulations($this->getManipulations());
@@ -304,9 +299,17 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
                 $mediaAdder->withResponsiveImages();
             }
 
-            return $mediaAdder->toMediaCollection($this->getCollection(), $this->getDiskName())->getAttributeValue('uuid');
+            try {
+                $media = $mediaAdder->toMediaCollection($this->getCollection(), $this->getDiskName());
+            } finally {
+                if (file_exists($tempPath)) {
+                    unlink($tempPath);
+                }
+            }
+
+            return $media->getAttributeValue('uuid');
         });
-        
+
         // Standard FileUpload storeFile logic (fallback)
         FileUpload::macro('storeUploadedFileToDisk', function (TemporaryUploadedFile $file) {
             /** @var FileUpload $this */

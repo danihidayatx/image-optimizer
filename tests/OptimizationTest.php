@@ -4,7 +4,6 @@ use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 use Livewire\Component;
@@ -24,7 +23,7 @@ class TestLivewireComponent extends Component implements HasForms
     public function getFormSchema(): array
     {
         return [
-             // Schema defined in tests
+            // Schema defined in tests
         ];
     }
 }
@@ -32,32 +31,33 @@ class TestLivewireComponent extends Component implements HasForms
 beforeEach(function () {
     $fs = new \Illuminate\Filesystem\Filesystem;
     $fs->cleanDirectory(__DIR__ . '/temp');
-    if (!file_exists(__DIR__ . '/temp/livewire-tmp')) {
+    if (! file_exists(__DIR__ . '/temp/livewire-tmp')) {
         mkdir(__DIR__ . '/temp/livewire-tmp', 0777, true);
     }
 });
 
-function getConfiguredComponent(Closure $configure) {
-    $livewire = new TestLivewireComponent();
+function getConfiguredComponent(Closure $configure)
+{
+    $livewire = new TestLivewireComponent;
     $container = ComponentContainer::make($livewire)
         ->statePath('data')
         ->components([
             $component = FileUpload::make('attachment')
                 ->disk('public')
-                ->directory('uploads')
+                ->directory('uploads'),
         ]);
-    
+
     $configure($component);
-    
+
     $component->container($container);
-    
+
     return $component;
 }
 
 it('optimizes image to webp format', function () {
     $filename = 'test.jpg';
     $imagePath = __DIR__ . '/temp/livewire-tmp/' . $filename;
-    
+
     $img = Image::canvas(100, 100, '#ff0000');
     $img->save($imagePath, 90, 'jpg');
 
@@ -72,7 +72,7 @@ it('optimizes image to webp format', function () {
     $property = $reflection->getProperty('saveUploadedFileUsing');
     $property->setAccessible(true);
     $callback = $property->getValue($component);
-    
+
     expect($callback)->not->toBeNull();
 
     // 4. Execute the callback
@@ -81,7 +81,7 @@ it('optimizes image to webp format', function () {
     // 5. Verify result
     expect($storedPath)->toContain('.webp');
     expect(Storage::disk('public')->exists($storedPath))->toBeTrue();
-    
+
     $content = Storage::disk('public')->get($storedPath);
     $savedImage = Image::make($content);
     expect($savedImage->mime())->toBe('image/webp');
@@ -90,7 +90,7 @@ it('optimizes image to webp format', function () {
 it('resizes image by percentage', function () {
     $filename = 'resize_test.jpg';
     $imagePath = __DIR__ . '/temp/livewire-tmp/' . $filename;
-    
+
     $img = Image::canvas(200, 200, '#00ff00');
     $img->save($imagePath, 90, 'jpg');
 
@@ -109,7 +109,7 @@ it('resizes image by percentage', function () {
 
     $content = Storage::disk('public')->get($storedPath);
     $savedImage = Image::make($content);
-    
+
     expect($savedImage->width())->toBe(100);
     expect($savedImage->height())->toBe(100);
 });
@@ -117,7 +117,7 @@ it('resizes image by percentage', function () {
 it('respects max width', function () {
     $filename = 'max_width_test.jpg';
     $imagePath = __DIR__ . '/temp/livewire-tmp/' . $filename;
-    
+
     $img = Image::canvas(500, 200, '#0000ff');
     $img->save($imagePath);
 
@@ -136,7 +136,7 @@ it('respects max width', function () {
 
     $content = Storage::disk('public')->get($storedPath);
     $savedImage = Image::make($content);
-    
+
     expect($savedImage->width())->toBe(250);
     expect($savedImage->height())->toBe(100);
 });

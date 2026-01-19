@@ -28,11 +28,11 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
-        
+
         // Setup fake disk for testing uploads
         config()->set('filesystems.disks.public', [
             'driver' => 'local',
-            'root' => __DIR__.'/temp',
+            'root' => __DIR__ . '/temp',
         ]);
         config()->set('filesystems.default', 'public');
     }
