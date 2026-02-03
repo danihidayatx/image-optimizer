@@ -7,7 +7,6 @@ use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManagerStatic as Image;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -125,44 +124,15 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
                 $isImage &&
                 ($format || $resize || $maxWidth || $maxHeight)
             ) {
-                $image = Image::make($file);
+                $compressedImage = ImageProcessor::process($file, [
+                    'format' => $format,
+                    'resize' => $resize,
+                    'max_width' => $maxWidth,
+                    'max_height' => $maxHeight,
+                    'quality' => $quality,
+                ]);
 
                 if ($format) {
-                    $quality = $quality ?? ($format === 'jpeg' || $format === 'jpg' ? 70 : null);
-                }
-
-                $shouldResize = false;
-                $imageWidth = null;
-                $imageHeight = null;
-
-                if ($maxWidth && $image->width() > $maxWidth) {
-                    $shouldResize = true;
-                    $imageWidth = $maxWidth;
-                }
-
-                if ($maxHeight && $image->height() > $maxHeight) {
-                    $shouldResize = true;
-                    $imageHeight = $maxHeight;
-                }
-
-                if ($resize) {
-                    $shouldResize = true;
-                    if ($image->height() > $image->width()) {
-                        $imageHeight = $image->height() - ($image->height() * ($resize / 100));
-                    } else {
-                        $imageWidth = $image->width() - ($image->width() * ($resize / 100));
-                    }
-                }
-
-                if ($shouldResize) {
-                    $image->resize($imageWidth, $imageHeight, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                }
-
-                if ($format) {
-                    $compressedImage = $image->encode($format, $quality);
-
                     // Update filename extension
                     $extension = strrpos($filename, '.');
                     if ($extension !== false) {
@@ -170,13 +140,11 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
                     } else {
                         $filename .= '.' . $format;
                     }
-                } else {
-                    $compressedImage = $image->encode();
                 }
 
                 Storage::disk($this->getDiskName())->put(
                     $this->getDirectory() . '/' . $filename,
-                    (string) $compressedImage
+                    $compressedImage
                 );
 
                 return $this->getDirectory() . '/' . $filename;
@@ -213,44 +181,15 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
                 $isImage &&
                 ($format || $resize || $maxWidth || $maxHeight)
             ) {
-                $image = Image::make($content);
+                $content = ImageProcessor::process($content, [
+                    'format' => $format,
+                    'resize' => $resize,
+                    'max_width' => $maxWidth,
+                    'max_height' => $maxHeight,
+                    'quality' => $quality,
+                ]);
 
                 if ($format) {
-                    $quality = $quality ?? ($format === 'jpeg' || $format === 'jpg' ? 70 : null);
-                }
-
-                $shouldResize = false;
-                $imageWidth = null;
-                $imageHeight = null;
-
-                if ($maxWidth && $image->width() > $maxWidth) {
-                    $shouldResize = true;
-                    $imageWidth = $maxWidth;
-                }
-
-                if ($maxHeight && $image->height() > $maxHeight) {
-                    $shouldResize = true;
-                    $imageHeight = $maxHeight;
-                }
-
-                if ($resize) {
-                    $shouldResize = true;
-                    if ($image->height() > $image->width()) {
-                        $imageHeight = $image->height() - ($image->height() * ($resize / 100));
-                    } else {
-                        $imageWidth = $image->width() - ($image->width() * ($resize / 100));
-                    }
-                }
-
-                if ($shouldResize) {
-                    $image->resize($imageWidth, $imageHeight, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                }
-
-                if ($format) {
-                    $content = (string) $image->encode($format, $quality);
-
                     // Update filename extension locally
                     $extension = strrpos($filename, '.');
                     if ($extension !== false) {
@@ -258,8 +197,6 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
                     } else {
                         $filename .= '.' . $format;
                     }
-                } else {
-                    $content = (string) $image->encode();
                 }
             }
 
