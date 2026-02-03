@@ -27,36 +27,41 @@ class TestLivewireComponent extends Component implements HasForms
 }
 
 // Helper Functions for V2/V3 Compatibility
-function createTestImage($width, $height, $color, $path) {
+function createTestImage($width, $height, $color, $path)
+{
     if (class_exists('Intervention\Image\ImageManagerStatic')) {
         $img = \Intervention\Image\ImageManagerStatic::canvas($width, $height, $color);
         $img->save($path);
     } else {
-        $driver = class_exists('Intervention\Image\Drivers\Imagick\Driver') 
-            ? new \Intervention\Image\Drivers\Imagick\Driver() 
-            : new \Intervention\Image\Drivers\Gd\Driver();
+        $driver = class_exists('Intervention\Image\Drivers\Imagick\Driver')
+            ? new \Intervention\Image\Drivers\Imagick\Driver
+            : new \Intervention\Image\Drivers\Gd\Driver;
         $manager = new \Intervention\Image\ImageManager($driver);
         $img = $manager->create($width, $height)->fill($color);
         $img->save($path);
     }
 }
 
-function readTestImage($source) {
+function readTestImage($source)
+{
     if (class_exists('Intervention\Image\ImageManagerStatic')) {
         return \Intervention\Image\ImageManagerStatic::make($source);
     } else {
-        $driver = class_exists('Intervention\Image\Drivers\Imagick\Driver') 
-            ? new \Intervention\Image\Drivers\Imagick\Driver() 
-            : new \Intervention\Image\Drivers\Gd\Driver();
+        $driver = class_exists('Intervention\Image\Drivers\Imagick\Driver')
+            ? new \Intervention\Image\Drivers\Imagick\Driver
+            : new \Intervention\Image\Drivers\Gd\Driver;
         $manager = new \Intervention\Image\ImageManager($driver);
+
         return $manager->read($source);
     }
 }
 
-function getTestImageMime($image) {
+function getTestImageMime($image)
+{
     if (method_exists($image, 'mime')) {
         return $image->mime();
     }
+
     return $image->origin()->mediaType();
 }
 

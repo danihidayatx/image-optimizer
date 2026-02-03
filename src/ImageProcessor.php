@@ -66,8 +66,8 @@ class ImageProcessor
     protected static function processV3($source, $format, $resize, $maxWidth, $maxHeight, $quality): string
     {
         $driver = extension_loaded('imagick') && class_exists('\Intervention\Image\Drivers\Imagick\Driver')
-            ? new \Intervention\Image\Drivers\Imagick\Driver()
-            : new \Intervention\Image\Drivers\Gd\Driver();
+            ? new \Intervention\Image\Drivers\Imagick\Driver
+            : new \Intervention\Image\Drivers\Gd\Driver;
 
         $manager = new \Intervention\Image\ImageManager($driver);
         $image = $manager->read($source);
