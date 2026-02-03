@@ -2,6 +2,20 @@
 
 All notable changes to `image-optimizer` will be documented in this file.
 
+## v2.1.0 - 2026-02-03
+
+### What's Changed
+
+* Support for Intervention Image v3 while maintaining v2 backward compatibility.
+* Refactored image processing logic into `ImageProcessor` class.
+* Improved test suite for multi-version support.
+
+### Fixes
+
+* Closes #1
+
+**Full Changelog**: https://github.com/danihidayatx/image-optimizer/compare/v2.0.0...v2.1.0
+
 ## v1.6.4 - 2025-10-19
 
 ### What's Changed
