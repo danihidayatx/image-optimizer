@@ -2,6 +2,13 @@
 
 All notable changes to `image-optimizer` will be documented in this file.
 
+## v2.1.1 - 2026-02-17
+
+### What's Changed
+
+* Add documentation for the quality parameter in `optimize()` method and server configuration notes for WebP by @timur518.
+* Add test case for verifying the quality parameter in `OptimizationTest`.
+
 ## v2.1.0 - 2026-02-03
 
 ### What's Changed
