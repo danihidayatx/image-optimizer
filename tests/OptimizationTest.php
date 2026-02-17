@@ -180,3 +180,34 @@ it('respects max width', function () {
     expect($savedImage->width())->toBe(250);
     expect($savedImage->height())->toBe(100);
 });
+
+it('optimizes image with quality parameter', function () {
+    $filename = 'quality_test.jpg';
+    $imagePath = __DIR__ . '/temp/livewire-tmp/' . $filename;
+
+    createTestImage(500, 500, '#ff0000', $imagePath);
+
+    $file = new TemporaryUploadedFile($filename, 'public');
+
+    // High quality
+    $componentHigh = getConfiguredComponent(function ($c) {
+        $c->optimize('jpg', 100);
+    });
+
+    $reflection = new ReflectionClass($componentHigh);
+    $property = $reflection->getProperty('saveUploadedFileUsing');
+    $property->setAccessible(true);
+    $callbackHigh = $property->getValue($componentHigh);
+    $storedPathHigh = $callbackHigh($componentHigh, $file, null);
+    $sizeHigh = Storage::disk('public')->size($storedPathHigh);
+
+    // Low quality
+    $componentLow = getConfiguredComponent(function ($c) {
+        $c->optimize('jpg', 10);
+    });
+    $callbackLow = $property->getValue($componentLow);
+    $storedPathLow = $callbackLow($componentLow, $file, null);
+    $sizeLow = Storage::disk('public')->size($storedPathLow);
+
+    expect($sizeLow)->toBeLessThan($sizeHigh);
+});

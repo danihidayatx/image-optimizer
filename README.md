@@ -3,6 +3,7 @@
 
 # Optimize your Filament images before they reach your database.
 
+[![Downloads](https://img.shields.io/packagist/dt/danihidayatx/image-optimizer.svg?style=flat-square)](https://packagist.org/packages/danihidayatx/image-optimizer)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/danihidayatx/image-optimizer.svg?style=flat-square)](https://packagist.org/packages/danihidayatx/image-optimizer)
 
 When you currently upload an image using the native Filament component `FileUpload`, the original file is saved without any compression or conversion.
@@ -54,6 +55,22 @@ You must be using [Filament v3.x, v4.x or v5.x](https://filamentphp.com/docs/pan
 
 [GD Library](https://www.php.net/manual/en/image.installation.php) must be installed on your server to compress images.
 
+To ensure WebP images are previewed correctly in the admin panel, you may need to add the correct mime types to your server configuration.
+
+**Apache Users (.htaccess):**
+
+```apache
+AddType image/webp .webp
+```
+
+**Nginx Users:**
+
+Ensure your `mime.types` file includes:
+
+```nginx
+image/webp webp;
+```
+
 ### Optimizing images
 
 Before uploading your image, you may choose to optimize it by converting to your chosen format. The file saved to your disk will be the converted version only.
@@ -68,6 +85,16 @@ FileUpload::make('attachment')
     ->optimize('webp'),
 `````
 
+You can also pass a second parameter to `optimize` to set the quality of the image (0-100). This is useful if you want to compress the image further.
+
+`````php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->image()
+    ->optimize('webp', 85),
+`````
+
 You can do exactly the same using `SpatieMediaLibraryFileUpload`:
 
 `````php
@@ -75,7 +102,7 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 
 SpatieMediaLibraryFileUpload::make('attachment')
     ->image()
-    ->optimize('webp'),
+    ->optimize('webp', 85),
 `````
 
 ### Resizing images
