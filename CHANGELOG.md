@@ -2,6 +2,21 @@
 
 All notable changes to `image-optimizer` will be documented in this file.
 
+## v2.1.2 - 2026-03-25
+
+### What's Changed
+
+* Fix TemporaryUploadedFile handling in ImageProcessor::processV3() by @gsdtrustky in #6
+* Adds leading slash with optimization by @matildasmets in #5
+* Laravel 13 compatibility by @valpuia
+
+### Thanks
+
+Special thanks to:
+- @valpuia for Laravel 13 compatibility https://github.com/danihidayatx/image-optimizer/pull/8
+- @matildasmets for Adds leading slash with optimization #5
+- @gsdtrustky for Intervention Image v3: Unable to decode TemporaryUploadedFile in processV3() #6
+
 ## v2.1.1 - 2026-02-17
 
 ### What's Changed
