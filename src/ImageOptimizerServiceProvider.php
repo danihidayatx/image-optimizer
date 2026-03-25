@@ -142,12 +142,14 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
                     }
                 }
 
+                $path = ltrim($this->getDirectory() . '/' . $filename, '/');
+
                 Storage::disk($this->getDiskName())->put(
-                    $this->getDirectory() . '/' . $filename,
+                    $path,
                     $compressedImage
                 );
 
-                return $this->getDirectory() . '/' . $filename;
+                return $path;
             }
 
             return $this->storeUploadedFileToDisk($file);
