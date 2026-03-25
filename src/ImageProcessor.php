@@ -74,6 +74,12 @@ class ImageProcessor
             : new \Intervention\Image\Drivers\Gd\Driver;
 
         $manager = new ImageManager($driver);
+        
+        // Handle Livewire TemporaryUploadedFile for Intervention Image v3
+        if ($source instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+            $source = $source->getRealPath();
+        }
+        
         $image = $manager->read($source);
 
         $calcWidth = null;
