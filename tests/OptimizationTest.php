@@ -227,7 +227,7 @@ it('processes TemporaryUploadedFile without DecoderException', function () {
     $file = new TemporaryUploadedFile($filename, 'public');
 
     // Test with Intervention Image v3
-    if (!class_exists('Intervention\Image\ImageManagerStatic')) {
+    if (! class_exists('Intervention\Image\ImageManagerStatic')) {
         $component = getConfiguredComponent(function ($c) {
             $c->optimize('webp');
         });
