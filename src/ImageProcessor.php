@@ -5,6 +5,7 @@ namespace DaniHidayatX\ImageOptimizer;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ImageProcessor
 {
@@ -74,6 +75,12 @@ class ImageProcessor
             : new \Intervention\Image\Drivers\Gd\Driver;
 
         $manager = new ImageManager($driver);
+
+        // Handle Livewire TemporaryUploadedFile for Intervention Image v3
+        if ($source instanceof TemporaryUploadedFile) {
+            $source = $source->getRealPath();
+        }
+
         $image = $manager->read($source);
 
         $calcWidth = null;
