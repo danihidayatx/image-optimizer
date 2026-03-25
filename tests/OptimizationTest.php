@@ -1,9 +1,15 @@
 <?php
 
+use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Schemas\Schema;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Imagick\Driver;
+use Intervention\Image\ImageManager;
+use Intervention\Image\ImageManagerStatic;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -30,13 +36,13 @@ class TestLivewireComponent extends Component implements HasForms
 function createTestImage($width, $height, $color, $path)
 {
     if (class_exists('Intervention\Image\ImageManagerStatic')) {
-        $img = \Intervention\Image\ImageManagerStatic::canvas($width, $height, $color);
+        $img = ImageManagerStatic::canvas($width, $height, $color);
         $img->save($path);
     } else {
         $driver = class_exists('Intervention\Image\Drivers\Imagick\Driver')
-            ? new \Intervention\Image\Drivers\Imagick\Driver
-            : new \Intervention\Image\Drivers\Gd\Driver;
-        $manager = new \Intervention\Image\ImageManager($driver);
+            ? new Driver
+            : new Intervention\Image\Drivers\Gd\Driver;
+        $manager = new ImageManager($driver);
         $img = $manager->create($width, $height)->fill($color);
         $img->save($path);
     }
@@ -45,12 +51,12 @@ function createTestImage($width, $height, $color, $path)
 function readTestImage($source)
 {
     if (class_exists('Intervention\Image\ImageManagerStatic')) {
-        return \Intervention\Image\ImageManagerStatic::make($source);
+        return ImageManagerStatic::make($source);
     } else {
         $driver = class_exists('Intervention\Image\Drivers\Imagick\Driver')
-            ? new \Intervention\Image\Drivers\Imagick\Driver
-            : new \Intervention\Image\Drivers\Gd\Driver;
-        $manager = new \Intervention\Image\ImageManager($driver);
+            ? new Driver
+            : new Intervention\Image\Drivers\Gd\Driver;
+        $manager = new ImageManager($driver);
 
         return $manager->read($source);
     }
@@ -66,7 +72,7 @@ function getTestImageMime($image)
 }
 
 beforeEach(function () {
-    $fs = new \Illuminate\Filesystem\Filesystem;
+    $fs = new Filesystem;
     $fs->cleanDirectory(__DIR__ . '/temp');
     if (! file_exists(__DIR__ . '/temp/livewire-tmp')) {
         mkdir(__DIR__ . '/temp/livewire-tmp', 0777, true);
@@ -78,9 +84,9 @@ function getConfiguredComponent(Closure $configure)
     $livewire = new TestLivewireComponent;
 
     // Adapt to breaking change in Filament v4/v5
-    $componentContainerClass = class_exists(\Filament\Forms\ComponentContainer::class)
-        ? \Filament\Forms\ComponentContainer::class
-        : \Filament\Schemas\Schema::class;
+    $componentContainerClass = class_exists(ComponentContainer::class)
+        ? ComponentContainer::class
+        : Schema::class;
 
     $container = $componentContainerClass::make($livewire)
         ->statePath('data')

@@ -4,6 +4,7 @@ namespace DaniHidayatX\ImageOptimizer;
 
 use Closure;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
@@ -98,7 +99,7 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
         // Helper to check for Spatie component
         FileUpload::macro('isSpatieComponent', function () {
             return class_exists('\Filament\Forms\Components\SpatieMediaLibraryFileUpload') &&
-                   $this instanceof \Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+                   $this instanceof SpatieMediaLibraryFileUpload;
         });
 
         // Standard FileUpload Logic
@@ -157,7 +158,7 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
 
         // Spatie FileUpload Logic
         FileUpload::macro('processAndStoreSpatie', function (TemporaryUploadedFile $file, ?Model $record) {
-            /** @var \Filament\Forms\Components\SpatieMediaLibraryFileUpload $this */
+            /** @var SpatieMediaLibraryFileUpload $this */
             if (! $record || ! method_exists($record, 'addMedia')) {
                 return null;
             }

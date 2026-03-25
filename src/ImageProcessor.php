@@ -2,6 +2,10 @@
 
 namespace DaniHidayatX\ImageOptimizer;
 
+use Intervention\Image\Drivers\Imagick\Driver;
+use Intervention\Image\ImageManager;
+use Intervention\Image\ImageManagerStatic;
+
 class ImageProcessor
 {
     public static function process($source, array $settings): string
@@ -25,7 +29,7 @@ class ImageProcessor
 
     protected static function processV2($source, $format, $resize, $maxWidth, $maxHeight, $quality): string
     {
-        $image = \Intervention\Image\ImageManagerStatic::make($source);
+        $image = ImageManagerStatic::make($source);
 
         $shouldResize = false;
         $imageWidth = null;
@@ -66,10 +70,10 @@ class ImageProcessor
     protected static function processV3($source, $format, $resize, $maxWidth, $maxHeight, $quality): string
     {
         $driver = extension_loaded('imagick') && class_exists('\Intervention\Image\Drivers\Imagick\Driver')
-            ? new \Intervention\Image\Drivers\Imagick\Driver
+            ? new Driver
             : new \Intervention\Image\Drivers\Gd\Driver;
 
-        $manager = new \Intervention\Image\ImageManager($driver);
+        $manager = new ImageManager($driver);
         $image = $manager->read($source);
 
         $calcWidth = null;
