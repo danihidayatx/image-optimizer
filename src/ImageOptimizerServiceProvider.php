@@ -32,7 +32,7 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
     protected function registerMacros(): void
     {
         // Optimization Settings Macros
-        FileUpload::macro('optimize', function (string | Closure | null $format = 'webp', ?int $quality = null) {
+        FileUpload::macro('optimize', function (string | Closure | null $format = 'webp', int | Closure | null $quality = null) {
             $this->imageOptimization = $this->imageOptimization ?? [];
             $this->imageOptimization['format'] = $format;
             $this->imageOptimization['quality'] = $quality;
