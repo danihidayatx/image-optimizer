@@ -110,7 +110,7 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
             $resize = $this->evaluate($settings['resize'] ?? null);
             $maxWidth = $this->evaluate($settings['max_width'] ?? null);
             $maxHeight = $this->evaluate($settings['max_height'] ?? null);
-            $quality = $settings['quality'] ?? null;
+            $quality = $this->evaluate($settings['quality'] ?? null);
 
             $filename = $this->getUploadedFileNameForStorage($file);
 
@@ -168,7 +168,7 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
             $resize = $this->evaluate($settings['resize'] ?? null);
             $maxWidth = $this->evaluate($settings['max_width'] ?? null);
             $maxHeight = $this->evaluate($settings['max_height'] ?? null);
-            $quality = $settings['quality'] ?? null;
+            $quality = $this->evaluate($settings['quality'] ?? null);
 
             $filename = $this->getUploadedFileNameForStorage($file);
             $content = $file->get();
