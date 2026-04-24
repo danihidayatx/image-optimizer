@@ -253,3 +253,35 @@ it('processes TemporaryUploadedFile without DecoderException', function () {
         $this->assertTrue(true);
     }
 });
+
+it('evaluates quality closure', function () {
+    $filename = 'closure_quality_test.jpg';
+    $imagePath = __DIR__ . '/temp/livewire-tmp/' . $filename;
+
+    createTestImage(100, 100, '#ff0000', $imagePath);
+
+    $file = new TemporaryUploadedFile($filename, 'public');
+
+    $component = getConfiguredComponent(function ($c) {
+        $c->optimize('jpg', fn () => 10);
+    });
+
+    $reflection = new ReflectionClass($component);
+    $property = $reflection->getProperty('saveUploadedFileUsing');
+    $property->setAccessible(true);
+    $callback = $property->getValue($component);
+
+    $storedPath = $callback($component, $file, null);
+
+    expect(Storage::disk('public')->exists($storedPath))->toBeTrue();
+    $sizeLow = Storage::disk('public')->size($storedPath);
+
+    $componentHigh = getConfiguredComponent(function ($c) {
+        $c->optimize('jpg', 100);
+    });
+    $callbackHigh = $property->getValue($componentHigh);
+    $storedPathHigh = $callbackHigh($componentHigh, $file, null);
+    $sizeHigh = Storage::disk('public')->size($storedPathHigh);
+
+    expect($sizeLow)->toBeLessThan($sizeHigh);
+});

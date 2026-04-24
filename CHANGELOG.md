@@ -2,6 +2,14 @@
 
 All notable changes to `image-optimizer` will be documented in this file.
 
+## v2.2.0 - 2026-04-24
+
+### What's Changed
+
+* Support dynamic quality using Closures in `optimize()` macro.
+* Official support for Laravel 13.
+* Added tests for dynamic quality evaluation.
+
 ## v2.1.2 - 2026-03-25
 
 ### What's Changed

@@ -1,5 +1,4 @@
-> [!NOTE]  
-> This package is a fork of [joshembling/image-optimizer](https://github.com/joshembling/image-optimizer), updated to support Filament v4 & v5 and Laravel 12.
+> This package is a fork of [joshembling/image-optimizer](https://github.com/joshembling/image-optimizer), updated to support Filament v4 & v5 and Laravel 12 & 13.
 
 # Optimize your Filament images before they reach your database.
 
@@ -35,7 +34,7 @@ You use the same components as you have been doing and have access to two additi
 
 ## Installation
 
-You can install the package via composer, which works with Filament v3.x & v4.x, and Laravel 10, 11 & 12:
+You can install the package via composer, which works with Filament v3.x, v4.x & v5.x, and Laravel 10, 11, 12 & 13:
 
 ```bash
 composer require danihidayatx/image-optimizer
@@ -49,7 +48,7 @@ You must be using [Filament v3.x, v4.x or v5.x](https://filamentphp.com/docs/pan
 
 | PHP | Laravel version | Filament version | Image Optimizer version |
 | ----- | ----- | -----| ----- |
-| ^8.2 | ^10.0, ^11.0, ^12.0 | ^3.2, ^4.0, ^5.0 | ^2.0 |
+| ^8.2 | ^10.0, ^11.0, ^12.0, ^13.0 | ^3.2, ^4.0, ^5.0 | ^2.2 |
 
 ### Server
 
