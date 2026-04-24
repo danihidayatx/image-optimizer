@@ -21,6 +21,7 @@ You use the same components as you have been doing and have access to two additi
 - [Installation](#installation)
 - [Usage](#usage)
 	- [Optimizing Images](#optimizing-images)
+	- [Dynamic Values (Closures)](#dynamic-values-closures)
 	- [Resizing Images](#resizing-images)
 	- [Combining Methods](#combining-methods)
 	- [Multiple Images](#multiple-images)
@@ -104,6 +105,36 @@ SpatieMediaLibraryFileUpload::make('attachment')
     ->optimize('webp', 85),
 `````
 
+### Dynamic values (Closures)
+
+You may pass a **Closure** to almost any parameter (like `quality`, `resize`, `maxImageWidth`, etc.) to dynamically set values based on form state or logic.
+
+For example, adjusting quality based on a toggle:
+
+`````php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->image()
+    ->optimize(
+        format: 'webp', 
+        quality: fn ($get) => $get('high_quality') ? 100 : 50
+    ),
+`````
+
+This also works with `SpatieMediaLibraryFileUpload`:
+
+`````php
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+
+SpatieMediaLibraryFileUpload::make('attachment')
+    ->image()
+    ->optimize(
+        format: 'webp', 
+        quality: fn ($get) => $get('is_premium') ? 100 : 80
+    ),
+`````
+
 ### Resizing images
 
 You may also want to resize an image by passing in a percentage you would like to reduce the image by. This will also maintain aspect ratio.
@@ -146,6 +177,9 @@ FileUpload::make('attachment')
 ### Combining methods
 
 You can combine these two methods for maximum optimization.
+
+> [!TIP]
+> Most methods like `resize()`, `maxImageWidth()`, and `maxImageHeight()` also support **Closures**, allowing you to dynamically adjust settings based on form state.
 
 `````php
 use Filament\Forms\Components\FileUpload;

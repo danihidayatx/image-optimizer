@@ -285,3 +285,55 @@ it('evaluates quality closure', function () {
 
     expect($sizeLow)->toBeLessThan($sizeHigh);
 });
+
+it('evaluates resize closure', function () {
+    $filename = 'resize_closure_test.jpg';
+    $imagePath = __DIR__ . '/temp/livewire-tmp/' . $filename;
+
+    createTestImage(200, 200, '#00ff00', $imagePath);
+
+    $file = new TemporaryUploadedFile($filename, 'public');
+
+    $component = getConfiguredComponent(function ($c) {
+        $c->resize(fn () => 50); // Resize by 50% via Closure
+    });
+
+    $reflection = new ReflectionClass($component);
+    $property = $reflection->getProperty('saveUploadedFileUsing');
+    $property->setAccessible(true);
+    $callback = $property->getValue($component);
+
+    $storedPath = $callback($component, $file, null);
+
+    $content = Storage::disk('public')->get($storedPath);
+    $savedImage = readTestImage($content);
+
+    expect($savedImage->width())->toBe(100);
+    expect($savedImage->height())->toBe(100);
+});
+
+it('evaluates max width closure', function () {
+    $filename = 'max_width_closure_test.jpg';
+    $imagePath = __DIR__ . '/temp/livewire-tmp/' . $filename;
+
+    createTestImage(500, 200, '#0000ff', $imagePath);
+
+    $file = new TemporaryUploadedFile($filename, 'public');
+
+    $component = getConfiguredComponent(function ($c) {
+        $c->maxImageWidth(fn () => 250);
+    });
+
+    $reflection = new ReflectionClass($component);
+    $property = $reflection->getProperty('saveUploadedFileUsing');
+    $property->setAccessible(true);
+    $callback = $property->getValue($component);
+
+    $storedPath = $callback($component, $file, null);
+
+    $content = Storage::disk('public')->get($storedPath);
+    $savedImage = readTestImage($content);
+
+    expect($savedImage->width())->toBe(250);
+    expect($savedImage->height())->toBe(100);
+});
