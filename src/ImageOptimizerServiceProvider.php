@@ -125,7 +125,7 @@ class ImageOptimizerServiceProvider extends PackageServiceProvider
                 $isImage &&
                 ($format || $resize || $maxWidth || $maxHeight)
             ) {
-                $compressedImage = ImageProcessor::process($file, [
+                $compressedImage = ImageProcessor::process($file->get(), [
                     'format' => $format,
                     'resize' => $resize,
                     'max_width' => $maxWidth,

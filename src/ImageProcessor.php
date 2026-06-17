@@ -30,6 +30,10 @@ class ImageProcessor
 
     protected static function processV2($source, $format, $resize, $maxWidth, $maxHeight, $quality): string
     {
+        if ($source instanceof TemporaryUploadedFile) {
+            $source = $source->getRealPath();
+        }
+
         $image = ImageManagerStatic::make($source);
 
         $shouldResize = false;

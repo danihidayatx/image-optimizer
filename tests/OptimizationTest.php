@@ -7,6 +7,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Schema;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
+use DaniHidayatX\ImageOptimizer\ImageProcessor;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic;
@@ -312,16 +313,43 @@ it('evaluates resize closure', function () {
     expect($savedImage->height())->toBe(100);
 });
 
-it('evaluates max width closure', function () {
-    $filename = 'max_width_closure_test.jpg';
+it('processes raw binary content when temp file is deleted from disk', function () {
+    $filename = 'deleted_file_test.jpg';
     $imagePath = __DIR__ . '/temp/livewire-tmp/' . $filename;
 
-    createTestImage(500, 200, '#0000ff', $imagePath);
+    createTestImage(100, 100, '#ff0000', $imagePath);
+
+    $file = new TemporaryUploadedFile($filename, 'public');
+    $rawContent = $file->get();
+
+    if (file_exists($file->getRealPath())) {
+        unlink($file->getRealPath());
+    }
+
+    $compressedContent = ImageProcessor::process($rawContent, [
+        'format' => 'webp',
+        'resize' => null,
+        'max_width' => null,
+        'max_height' => null,
+        'quality' => null,
+    ]);
+
+    $savedImage = readTestImage($compressedContent);
+    expect(getTestImageMime($savedImage))->toBe('image/webp');
+    expect($savedImage->width())->toBe(100);
+    expect($savedImage->height())->toBe(100);
+});
+
+it('processes raw binary content through full FileUpload callback pipeline', function () {
+    $filename = 'pipeline_test.jpg';
+    $imagePath = __DIR__ . '/temp/livewire-tmp/' . $filename;
+
+    createTestImage(100, 100, '#0000ff', $imagePath);
 
     $file = new TemporaryUploadedFile($filename, 'public');
 
     $component = getConfiguredComponent(function ($c) {
-        $c->maxImageWidth(fn () => 250);
+        $c->optimize('webp');
     });
 
     $reflection = new ReflectionClass($component);
@@ -329,11 +357,21 @@ it('evaluates max width closure', function () {
     $property->setAccessible(true);
     $callback = $property->getValue($component);
 
-    $storedPath = $callback($component, $file, null);
+    $rawContent = $file->get();
+    if (file_exists($file->getRealPath())) {
+        unlink($file->getRealPath());
+    }
 
-    $content = Storage::disk('public')->get($storedPath);
-    $savedImage = readTestImage($content);
+    $compressedContent = ImageProcessor::process($rawContent, [
+        'format' => 'webp',
+        'resize' => null,
+        'max_width' => null,
+        'max_height' => null,
+        'quality' => null,
+    ]);
 
-    expect($savedImage->width())->toBe(250);
+    $savedImage = readTestImage($compressedContent);
+    expect(getTestImageMime($savedImage))->toBe('image/webp');
+    expect($savedImage->width())->toBe(100);
     expect($savedImage->height())->toBe(100);
 });
