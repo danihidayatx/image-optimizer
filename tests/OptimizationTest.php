@@ -1,5 +1,6 @@
 <?php
 
+use DaniHidayatX\ImageOptimizer\ImageProcessor;
 use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -7,7 +8,6 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Schema;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
-use DaniHidayatX\ImageOptimizer\ImageProcessor;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic;
