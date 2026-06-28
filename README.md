@@ -239,6 +239,25 @@ SpatieMediaLibraryFileUpload::make('attachment')
 
 - You might see a 'Waiting for size' message and an infinite loading state on the component and the likely cause of this is a CORS issue. This can be quickly be resolved by ensuring you are serving and upload images from the same domain. Check your Javascript console for more information.
 
+### PHPStan / Static Analysis
+
+Since the methods (`optimize()`, `resize()`, etc.) are registered at runtime using Laravel macros, PHPStan / Larastan might flag them as undefined methods.
+
+This package ships with a PHPStan extension to automatically declare these methods.
+
+#### A. Automatic (Recommended)
+
+If your project uses [phpstan/extension-installer](https://github.com/phpstan/extension-installer), the extension will be discovered and loaded automatically. No additional configuration is required.
+
+#### B. Manual
+
+If you do not use the extension installer, you must manually register the extension in your project's `phpstan.neon` (or `phpstan.neon.dist`) file:
+
+```neon
+includes:
+    - vendor/danihidayatx/image-optimizer/extension.neon
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
