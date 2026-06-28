@@ -1,0 +1,103 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property DaniHidayatX\\ImageOptimizer\\ImageOptimizerServiceProvider\:\:\$hasOptimizerHook\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Access to an undefined property DaniHidayatX\\ImageOptimizer\\ImageOptimizerServiceProvider\:\:\$imageOptimization\.$#'
+			identifier: property.notFound
+			count: 6
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Access to property \$imageOptimization on an unknown class Filament\\Forms\\Components\\SpatieMediaLibraryFileUpload\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Call to an undefined method DaniHidayatX\\ImageOptimizer\\ImageOptimizerServiceProvider\:\:ensureOptimizerHook\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Call to an undefined method DaniHidayatX\\ImageOptimizer\\ImageOptimizerServiceProvider\:\:saveUploadedFileUsing\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Call to method evaluate\(\) on an unknown class Filament\\Forms\\Components\\SpatieMediaLibraryFileUpload\.$#'
+			identifier: class.notFound
+			count: 7
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Call to method getCollection\(\) on an unknown class Filament\\Forms\\Components\\SpatieMediaLibraryFileUpload\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Call to method getConversionsDisk\(\) on an unknown class Filament\\Forms\\Components\\SpatieMediaLibraryFileUpload\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Call to method getCustomProperties\(\) on an unknown class Filament\\Forms\\Components\\SpatieMediaLibraryFileUpload\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Call to method getDiskName\(\) on an unknown class Filament\\Forms\\Components\\SpatieMediaLibraryFileUpload\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Call to method getManipulations\(\) on an unknown class Filament\\Forms\\Components\\SpatieMediaLibraryFileUpload\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Call to method getUploadedFileNameForStorage\(\) on an unknown class Filament\\Forms\\Components\\SpatieMediaLibraryFileUpload\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Call to method hasResponsiveImages\(\) on an unknown class Filament\\Forms\\Components\\SpatieMediaLibraryFileUpload\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$component contains unknown class Filament\\Forms\\Components\\SpatieMediaLibraryFileUpload\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^PHPDoc tag @var with type Filament\\Forms\\Components\\FileUpload is not subtype of native type \$this\(DaniHidayatX\\ImageOptimizer\\ImageOptimizerServiceProvider\)\.$#'
+			identifier: varTag.nativeType
+			count: 2
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^PHPDoc tag @var with type Filament\\Forms\\Components\\SpatieMediaLibraryFileUpload is not subtype of native type \$this\(DaniHidayatX\\ImageOptimizer\\ImageOptimizerServiceProvider\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: src/ImageOptimizerServiceProvider.php
+
+		-
+			message: '#^Call to static method make\(\) on an unknown class Intervention\\Image\\ImageManagerStatic\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/ImageProcessor.php

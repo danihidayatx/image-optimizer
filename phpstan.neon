@@ -1,0 +1,15 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    level: 5
+    paths:
+        - src
+    bootstrapFiles:
+        - vendor/autoload.php
+    stubFiles:
+        - stubs/LivewireLaravelStubs.stub.php
+        - stubs/SpatieMediaLibraryFileUpload.stub.php
+        - stubs/ImageManagerStatic.stub.php
