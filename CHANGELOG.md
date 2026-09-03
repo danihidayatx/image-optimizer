@@ -2,6 +2,10 @@
 
 All notable changes to `image-optimizer` will be documented in this file.
 
+## v2.2.4 - 2026-09-03
+
+**Full Changelog**: https://github.com/danihidayatx/image-optimizer/compare/v2.2.2...v2.2.4
+
 ## v2.2.0 - 2026-04-24
 
 ### What's Changed
@@ -21,6 +25,7 @@ All notable changes to `image-optimizer` will be documented in this file.
 ### Thanks
 
 Special thanks to:
+
 - @valpuia for Laravel 13 compatibility https://github.com/danihidayatx/image-optimizer/pull/8
 - @matildasmets for Adds leading slash with optimization #5
 - @gsdtrustky for Intervention Image v3: Unable to decode TemporaryUploadedFile in processV3() #6
