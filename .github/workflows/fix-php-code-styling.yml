@@ -14,14 +14,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Fix PHP code style issues
-        uses: aglipanci/laravel-pint-action@2.6
+        uses: aglipanci/laravel-pint-action@36de00d5f5a8a4e12d443e01671daa12a18f4c79 # 2.6
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@8621497c8c39c72f3e2a999a26b4ca1b5058a842 # v5.0.1
         with:
           commit_message: Fix styling
