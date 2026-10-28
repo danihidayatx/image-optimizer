@@ -2,6 +2,16 @@
 
 All notable changes to `image-optimizer` will be documented in this file.
 
+## v2.2.5: Security hardening for GitHub Actions workflows and composer scripts - 2026-10-28
+
+### What's Changed
+
+* **Security Hardening**: Replaced dangerous `pull_request_target` trigger with standard `pull_request` in Dependabot auto-merge workflow.
+* **Token Permissions**: Applied least-privilege top-level `permissions: contents: read` across all GitHub Actions workflows and scoped write permissions strictly to jobs that require them.
+* **Lifecycle Scripts**: Removed unnecessary `post-autoload-dump` hook from `composer.json` to improve package security posture.
+
+**Full Changelog**: https://github.com/danihidayatx/image-optimizer/compare/v2.2.4...v2.2.5
+
 ## v2.2.4 - 2026-09-03
 
 **Full Changelog**: https://github.com/danihidayatx/image-optimizer/compare/v2.2.2...v2.2.4
