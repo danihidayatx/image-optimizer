@@ -6,11 +6,13 @@ on:
       - '**.php'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   php-code-styling:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
